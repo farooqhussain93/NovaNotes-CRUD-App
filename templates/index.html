@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NovaNotes - Fast Notes, Cloud Synced</title>
+    <!-- Google Fonts: Poppins (headings) & Inter (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <!-- Small, centered, pill-like floating navbar -->
+    <header class="navbar-wrapper">
+      <nav class="pill-navbar">
+        <div class="nav-brand">NovaNotes</div>
+      </nav>
+      <button type="button" class="btn-theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle Theme">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main Container -->
+    <main class="app-container">
+      
+      <!-- Left sidebar: Sticky Form Card -->
+      <section class="form-section">
+        <div class="card form-card">
+          <div class="card-header">
+            <h2 id="formTitle">Create a Note</h2>
+            <p>Draft your thoughts and keep them organized</p>
+          </div>
+          <form method="post" class="note-form">
+            <input type="hidden" id="note_id" name="note_id" value="">
+            <div class="form-group">
+              <label for="title">Note Title</label>
+              <input type="text" id="title" name="title" placeholder="Give your note a title..." required autocomplete="off" maxlength="100">
+            </div>
+
+            <div class="form-group">
+              <label for="desc">Note Description</label>
+              <input type="text" id="desc" name="desc" placeholder="Write down details here..." required autocomplete="off" maxlength="1000">
+            </div>
+
+            <div class="form-group-checkbox">
+              <label class="checkbox-container">
+                <input type="checkbox" id="important" name="important">
+                <span class="custom-checkbox"></span>
+                <span class="checkbox-label">Mark as Important</span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-submit">
+              <span id="submitBtnText">Create Note</span>
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button type="button" id="cancelEditBtn" class="btn btn-cancel" style="display:none;">
+                Cancel
+              </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Right column: Notes List -->
+      <section class="notes-section">
+        <div class="notes-header">
+          <div class="title-area">
+            <h2>Your Notes</h2>
+            <span class="notes-count" id="notesCount">0 notes</span>
+          </div>
+          <!-- Client-side real-time Search Bar -->
+          <div class="search-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="searchNotes" placeholder="Search notes..." autocomplete="off">
+          </div>
+        </div>
+
+        {% if notes %}
+          <div class="notes-grid" id="notesGrid">
+            {% for item in notes %}
+              <div class="note-card {% if item.important %}important-card{% endif %}" data-id="{{ item.id }}">
+                <div class="card-accent"></div>
+                <div class="card-content">
+                  <div class="card-meta">
+                    {% if item.important %}
+                      <span class="badge badge-important">
+                        <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                        Important
+                      </span>
+                    {% else %}
+                      <span class="badge badge-normal">Note</span>
+                    {% endif %}
+                    
+                    <div class="card-actions">
+                      <button type="button" class="btn-action btn-edit" title="Edit Note" aria-label="Edit Note" data-id="{{ item.id }}" data-title="{{ item.title }}" data-desc="{{ item.desc }}" data-important="{{ item.important }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 20h9"></path>
+                          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+                      </button>
+                      <a href="/delete/{{ item.id }}" class="btn-action btn-delete" title="Delete Note" aria-label="Delete Note">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <h3 class="note-title">{{ item.title }}</h3>
+                  <p class="note-description">{{ item.desc }}</p>
+                  <p class="note-timestamp">{{ item.created_at }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <!-- Empty State -->
+          <div class="empty-state">
+            <div class="empty-illustration">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+                <line x1="9" y1="11" x2="15" y2="11"></line>
+                <line x1="9" y1="19" x2="13" y2="19"></line>
+              </svg>
+            </div>
+            <h3>No notes yet</h3>
+            <p>Your notes list is empty. Write your first note using the form to get started!</p>
+          </div>
+        {% endif %}
+      </section>
+
+    </main>
+
+<div class="toast" id="toastNotification"></div>
+
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-box">
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        <line x1="10" y1="11" x2="10" y2="17"></line>
+        <line x1="14" y1="11" x2="14" y2="17"></line>
+      </svg>
+    </div>
+    <h3>Delete this note?</h3>
+    <p>This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-cancel" id="modalCancelBtn">Cancel</button>
+      <button type="button" class="btn btn-confirm-delete" id="modalConfirmBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+    <footer class="app-footer">
+      <p>&copy; 2026 NovaNotes. Designed for speed, clarity and bold organization.</p>
+    </footer>
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>
