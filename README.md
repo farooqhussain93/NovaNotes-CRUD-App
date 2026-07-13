@@ -26,12 +26,12 @@ The app is server-rendered — FastAPI renders the page through Jinja2 templates
 
 ## Features
 
-- Create, edit, and delete notes
+- Create, edit and delete notes
 - Mark a note as important
 - Live client-side search across note titles and descriptions
 - Note count display, including live filtered count while searching
 - Custom delete-confirmation modal
-- Toast notifications for create, update, delete, and validation errors
+- Toast notifications for create, update, delete and validation errors
 - Dark mode toggle
 - Server-side input validation on title and description length
 
@@ -41,13 +41,13 @@ The app is server-rendered — FastAPI renders the page through Jinja2 templates
 
 | Technology | Purpose |
 | --- | --- |
-| FastAPI | Backend framework, routes, and page rendering |
+| FastAPI | Backend framework, routes and page rendering |
 | Jinja2 | HTML templating |
 | MongoDB (Atlas) | Stores notes as documents |
 | PyMongo | Python driver for MongoDB |
 | Uvicorn | ASGI server |
 | python-dotenv | Loads the database connection string from environment variables |
-| HTML / CSS / JavaScript | Frontend structure, styling, and interactivity |
+| HTML / CSS / JavaScript | Frontend structure, styling and interactivity |
 
 ---
 
@@ -63,7 +63,7 @@ This version does not include:
 
 - User authentication / login
 - Multiple users or private notes
-- Note categories, tags, or pagination
+- Note categories, tags or pagination
 
 ---
 
