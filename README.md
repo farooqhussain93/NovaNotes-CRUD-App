@@ -4,6 +4,8 @@
 
 A simple, modern single-page notes app built with FastAPI, Jinja2 and MongoDB. Create, edit, delete and search notes, mark any note as important, and switch between light and dark themes.
 
+---
+
 ## Screenshots
 
 ### Light Mode
@@ -12,11 +14,15 @@ A simple, modern single-page notes app built with FastAPI, Jinja2 and MongoDB. C
 ### Dark Mode
 ![NovaNotes Dark Mode](screenshots/novanotes-dark-mode.png)
 
+---
+
 ## Project Overview
 
 This project was built primarily as a hands-on learning exercise, with the main focus on practicing two things: building API endpoints and routes with FastAPI (routers, GET/POST handling, form validation, redirects) and connecting a real backend to MongoDB (reading and writing documents end to end).
 
 The app is server-rendered — FastAPI renders the page through Jinja2 templates, while a small amount of client-side JavaScript handles in-page interactions like search, edit mode, delete confirmation, toasts and the theme toggle, without any separate frontend framework.
+
+---
 
 ## Features
 
@@ -29,6 +35,8 @@ The app is server-rendered — FastAPI renders the page through Jinja2 templates
 - Dark mode toggle
 - Server-side input validation on title and description length
 
+---
+
 ## Tech Stack
 
 | Technology | Purpose |
@@ -40,6 +48,8 @@ The app is server-rendered — FastAPI renders the page through Jinja2 templates
 | Uvicorn | ASGI server |
 | python-dotenv | Loads the database connection string from environment variables |
 | HTML / CSS / JavaScript | Frontend structure, styling, and interactivity |
+
+---
 
 ## Project Scope
 
@@ -55,10 +65,14 @@ This version does not include:
 - Multiple users or private notes
 - Note categories, tags, or pagination
 
+---
+
 ## Future Improvements
 
 - User authentication, so each user only sees their own notes
 - Filter notes by "important" only
+
+---
 
 ## License
 
