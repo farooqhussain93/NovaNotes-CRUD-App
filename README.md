@@ -1,4 +1,4 @@
-# NovaNotes
+# NovaNotes | FastAPI & MongoDB Notes App
 
 **Scope:** Single-page / FastAPI + MongoDB practice project
 
